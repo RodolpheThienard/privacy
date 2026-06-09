@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PinFlow – Smart Pinterest Scheduler</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; color: #333; background: #fff; }
+
+    /* NAVBAR */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 60px; background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 1.6rem; font-weight: 800; color: #e60023; letter-spacing: -1px; }
+    .logo span { color: #333; }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul li a { text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; }
+    nav ul li a:hover { color: #e60023; }
+    .nav-cta {
+      background: #e60023; color: #fff !important; padding: 10px 22px;
+      border-radius: 24px; font-weight: 700 !important;
+    }
+    .nav-cta:hover { background: #c0001d; color: #fff !important; }
+
+    /* HERO */
+    .hero {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 90px 40px 70px;
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 60%, #fce4e4 100%);
+    }
+    .hero-badge {
+      background: #fce4e4; color: #e60023; font-size: 0.8rem; font-weight: 700;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 22px; letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.15; max-width: 700px; }
+    .hero h1 span { color: #e60023; }
+    .hero p {
+      margin-top: 22px; font-size: 1.15rem; color: #666; max-width: 560px; line-height: 1.7;
+    }
+    .hero-buttons { display: flex; gap: 16px; margin-top: 38px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: #e60023; color: #fff; padding: 14px 32px;
+      border-radius: 28px; text-decoration: none; font-weight: 700; font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #c0001d; }
+    .btn-secondary {
+      background: #fff; color: #e60023; padding: 14px 32px;
+      border-radius: 28px; text-decoration: none; font-weight: 700; font-size: 1rem;
+      border: 2px solid #e60023; transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: #e60023; color: #fff; }
+
+    /* STATS */
+    .stats {
+      display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
+      padding: 50px 40px; background: #fff;
+      border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;
+    }
+    .stat-item { text-align: center; }
+    .stat-item h3 { font-size: 2.4rem; font-weight: 900; color: #e60023; }
+    .stat-item p { font-size: 0.9rem; color: #888; margin-top: 4px; font-weight: 500; }
+
+    /* FEATURES */
+    .features { padding: 80px 60px; background: #fafafa; }
+    .section-title { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+    .section-sub { text-align: center; color: #888; font-size: 1rem; margin-bottom: 52px; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .feature-card {
+      background: #fff; border-radius: 16px; padding: 32px 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07); transition: transform 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); }
+    .feature-icon { font-size: 2.4rem; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: #222; }
+    .feature-card p { font-size: 0.92rem; color: #777; line-height: 1.65; }
+
+    /* HOW IT WORKS */
+    .how { padding: 80px 60px; background: #fff; }
+    .steps { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+    .step { text-align: center; flex: 1; min-width: 200px; max-width: 240px; }
+    .step-number {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #e60023; color: #fff; font-size: 1.4rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
+    }
+    .step h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 0.88rem; color: #777; line-height: 1.6; }
+
+    /* TESTIMONIALS */
+    .testimonials { padding: 80px 60px; background: #fff5f5; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px; max-width: 1000px; margin: 0 auto;
+    }
+    .testimonial-card {
+      background: #fff; border-radius: 14px; padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .stars { color: #e60023; font-size: 1rem; margin-bottom: 12px; }
+    .testimonial-card p { font-size: 0.92rem; color: #555; line-height: 1.65; font-style: italic; }
+    .testimonial-author { margin-top: 16px; font-weight: 700; color: #333; font-size: 0.9rem; }
+
+    /* PRICING */
+    .pricing { padding: 80px 60px; background: #fff; }
+    .pricing-grid {
+      display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto;
+    }
+    .pricing-card {
+      border: 2px solid #f0f0f0; border-radius: 18px; padding: 36px 30px;
+      flex: 1; min-width: 240px; max-width: 280px; text-align: center;
+      transition: transform 0.2s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.popular { border-color: #e60023; position: relative; }
+    .popular-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: #e60023; color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 4px 16px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+    .pricing-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 10px; }
+    .price { font-size: 2.6rem; font-weight: 900; color: #e60023; }
+    .price span { font-size: 1rem; color: #999; font-weight: 400; }
+    .pricing-card ul { list-style: none; margin: 20px 0 28px; text-align: left; }
+    .pricing-card ul li { font-size: 0.88rem; color: #666; padding: 6px 0; }
+    .pricing-card ul li::before { content: "✓ "; color: #e60023; font-weight: 700; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, #e60023, #ff4560);
+      color: #fff; text-align: center; padding: 70px 40px;
+    }
+    .cta-banner h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 14px; }
+    .cta-banner p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 32px; }
+    .btn-white {
+      background: #fff; color: #e60023; padding: 14px 36px;
+      border-radius: 28px; text-decoration: none; font-weight: 800; font-size: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1a1a1a; color: #aaa; text-align: center; padding: 36px 40px;
+      font-size: 0.88rem; line-height: 1.9;
+    }
+    footer a { color: #e60023; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .footer-links { display: flex; justify-content: center; gap: 28px; margin-bottom: 14px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Pin<span>Flow</span></div>
+    <ul>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">How it Works</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="https://unimplemented.fr/privacy-policy" target="_blank">Privacy Policy</a></li>
+      <li><a href="#" class="nav-cta">Get Started Free</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🚀 Powered by Pinterest API</div>
+    <h1>Schedule & Grow Your<br/><span>Pinterest Presence</span><br/>Effortlessly</h1>
+    <p>PinFlow helps creators, brands, and marketers automate their Pinterest strategy — saving hours every week while driving more traffic and engagement.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">Start for Free</a>
+      <a href="#" class="btn-secondary">See How It Works</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-item"><h3>12,400+</h3><p>Active Users</p></div>
+    <div class="stat-item"><h3>3.2M</h3><p>Pins Scheduled</p></div>
+    <div class="stat-item"><h3>4.8★</h3><p>Average Rating</p></div>
+    <div class="stat-item"><h3>98%</h3><p>Satisfaction Rate</p></div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2 class="section-title">Everything You Need to Win on Pinterest</h2>
+    <p class="section-sub">Built for creators and businesses who want real results.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Smart Scheduling</h3>
+        <p>Plan and schedule your pins days, weeks, or months in advance. Our AI picks the best times for maximum reach.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>In-Depth Analytics</h3>
+        <p>Track impressions, saves, clicks, and engagement in real time. Understand what content performs best.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Pin Creator</h3>
+        <p>Design beautiful pins directly inside PinFlow with our drag-and-drop editor and ready-made templates.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Pinterest API Integration</h3>
+        <p>Secure and direct connection to Pinterest via official API. Your account is always safe and compliant.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Content Suggestions</h3>
+        <p>Get intelligent recommendations for pin descriptions, keywords, and board categories based on your niche.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Team Collaboration</h3>
+        <p>Invite your team, assign roles, and manage multiple Pinterest accounts from one unified dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <h2 class="section-title">How PinFlow Works</h2>
+    <p class="section-sub">Up and running in under 3 minutes.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Connect Your Account</h4>
+        <p>Sign in with Pinterest via our secure OAuth integration. No passwords stored.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>Create Your Pins</h4>
+        <p>Upload images, write descriptions, add links, and assign boards in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Set Your Schedule</h4>
+        <p>Choose dates and times or let our AI automatically optimize your posting schedule.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4>Watch Your Growth</h4>
+        <p>Monitor your analytics dashboard and continuously improve your strategy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <h2 class="section-title">Loved by Creators Worldwide</h2>
+    <p class="section-sub">Join thousands of happy PinFlow users.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"PinFlow tripled my Pinterest traffic in just 6 weeks. The scheduling feature alone is worth every penny."</p>
+        <div class="testimonial-author">— Sarah M., Lifestyle Blogger</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"Finally a tool that actually understands Pinterest. The analytics are incredibly detailed and easy to read."</p>
+        <div class="testimonial-author">— James T., E-commerce Owner</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"I manage 8 Pinterest accounts for my clients. PinFlow made that not only possible but actually enjoyable."</p>
+        <div class="testimonial-author">— Priya K., Social Media Manager</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <p class="section-sub">No hidden fees. Cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Free</h3>
+        <div class="price">$0<span>/mo</span></div>
+        <ul>
+          <li>1 Pinterest account</li>
+          <li>30 scheduled pins/month</li>
+          <li>Basic analytics</li>
+          <li>Pin Creator access</li>
+        </ul>
+        <a href="#" class="btn-secondary">Get Started</a>
+      </div>
+      <div class="pricing-card popular">
+        <div class="popular-badge">MOST POPULAR</div>
+        <h3>Pro</h3>
+        <div class="price">$19<span>/mo</span></div>
+        <ul>
+          <li>5 Pinterest accounts</li>
+          <li>Unlimited scheduled pins</li>
+          <li>Advanced analytics</li>
+          <li>AI suggestions</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn-primary">Get Started</a>
+      </div>
+      <div class="pricing-card">
+        <h3>Agency</h3>
+        <div class="price">$49<span>/mo</span></div>
+        <ul>
+          <li>Unlimited accounts</li>
+          <li>Unlimited pins</li>
+          <li>Team collaboration</li>
+          <li>White-label reports</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a href="#" class="btn-secondary">Get Started</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <h2>Start Growing on Pinterest Today</h2>
+    <p>Join 12,400+ creators already using PinFlow. Free forever, no credit card required.</p>
+    <a href="#" class="btn-white">Create Your Free Account</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+      <a href="https://unimplemented.fr/privacy-policy" target="_blank">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <p>© 2025 PinFlow – All rights reserved. | contact@unimplemented.fr</p>
+    <p>PinFlow uses the Pinterest API in compliance with <a href="https://policy.pinterest.com/en/developer-guidelines" target="_blank">Pinterest's Developer Guidelines</a>.</p>
+  </footer>
+
+</body>
+</html>
